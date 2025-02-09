@@ -9,7 +9,7 @@
 <script>
 function getMarketData() { // Function to fetch data (now in its own function)
     $.ajax({
-        url: "https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=GLRMK.IS&apikey=YOUR_API_KEY",
+        url: "https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=GLRMK.IS&apikey=ZN2GT5DXX5ARXMET",
         dataType: "json",
         success: function(data) {
             if (data["Global Quote"] && data["Global Quote"]["05. price"]) {

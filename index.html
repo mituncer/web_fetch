@@ -1,0 +1,38 @@
+<html>
+<head>
+<title>GLRMK Market Price</title>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+</head>
+<body>
+<div id="price"></div>
+
+<script>
+function getMarketData() { // Function to fetch data (now in its own function)
+    $.ajax({
+        url: "https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=GLRMK.IS&apikey=YOUR_API_KEY",
+        dataType: "json",
+        success: function(data) {
+            if (data["Global Quote"] && data["Global Quote"]["05. price"]) {
+                var price = data["Global Quote"]["05. price"];
+                $("#price").text("Current price: " + price + " TRY");
+            } else {
+                $("#price").text("Error fetching data. Please check your API key and symbol.");
+                console.error("AlphaVantage API Error:", data);
+            }
+        },
+        error: function(jqXHR, textStatus, errorThrown) {
+            $("#price").text("Error fetching data. Please check your connection.");
+            console.error("AJAX Error:", textStatus, errorThrown);
+        }
+    });
+}
+
+$(document).ready(function() {
+    getMarketData(); // Call the function once when the page loads
+
+    setInterval(getMarketData, 60000); // Call the function every 60000 milliseconds (1 minute)
+});
+</script>
+
+</body>
+</html>

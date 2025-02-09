@@ -1,36 +1,28 @@
+<!DOCTYPE html>
 <html>
 <head>
-<title>GLRMK Market Price</title>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<title>MSFT Market Price</title>
 </head>
 <body>
 <div id="price"></div>
 
 <script>
-function getMarketData() { // Function to fetch data (now in its own function)
-    $.ajax({
-        url: "https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=GLRMK.IS&apikey=ZN2GT5DXX5ARXMET",
-        dataType: "json",
-        success: function(data) {
+document.addEventListener('DOMContentLoaded', function() {
+    fetch("https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=MSFT&apikey=ZN2GT5DXX5ARXMET") // Corrected symbol: MSFT
+        .then(response => response.json())
+        .then(data => {
             if (data["Global Quote"] && data["Global Quote"]["05. price"]) {
                 var price = data["Global Quote"]["05. price"];
-                $("#price").text("Current price: " + price + " TRY");
+                document.getElementById("price").textContent = "Current price: " + price + " USD"; // Added USD
             } else {
-                $("#price").text("Error fetching data. Please check your API key and symbol.");
-                console.error("AlphaVantage API Error:", data);
+                document.getElementById("price").textContent = "Error fetching data. Check console.";
+                console.error("AlphaVantage API Error:", data); // More detailed error message
             }
-        },
-        error: function(jqXHR, textStatus, errorThrown) {
-            $("#price").text("Error fetching data. Please check your connection.");
-            console.error("AJAX Error:", textStatus, errorThrown);
-        }
-    });
-}
-
-$(document).ready(function() {
-    getMarketData(); // Call the function once when the page loads
-
-    setInterval(getMarketData, 60000); // Call the function every 60000 milliseconds (1 minute)
+        })
+        .catch(error => {
+            document.getElementById("price").textContent = "Error: " + error;
+            console.error("Fetch Error:", error);
+        });
 });
 </script>
 
